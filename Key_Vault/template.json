@@ -1,0 +1,148 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "keyVaultName": {
+            "type": "string",
+            "metadata": {
+                "description": "Key Vault Name."
+            }
+        },
+        "keyVaultSku": {
+            "type": "string",
+            "metadata": {
+                "description": "SKU for the vault."
+            }
+        },
+        "tenantId": {
+            "type": "string",
+            "metadata": {
+                "description": "Azure Tenant ID."
+            }
+        },
+        "objectId": {
+            "type": "string",
+            "metadata": {
+                "description": "User Object ID."
+            }
+        },
+        "runasobjectId": {
+            "type": "string",
+            "metadata": {
+                "description": "Run As account Object ID for Azure Automation."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        }
+    },
+    "variables": {
+        "keyValutRef": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "name": "[parameters('keyVaultName')]",
+            "apiVersion": "2016-10-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "sku": {
+                    "name": "[parameters('keyVaultSku')]",
+                    "family": "A"
+                },
+                "tenantId": "[parameters('tenantId')]",
+                "accessPolicies": [
+                    {
+                        "tenantId": "[parameters('tenantId')]",
+                        "objectId": "[parameters('objectId')]",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    },
+                    {
+                        "tenantId": "[parameters('tenantId')]",
+                        "objectId": "[parameters('runasobjectId')]",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
